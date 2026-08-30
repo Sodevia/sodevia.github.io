@@ -5,6 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- Security Meta Tags -->
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://formspree.io; object-src 'none'; base-uri 'self'; form-action https://formspree.io; upgrade-insecure-requests;">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
   <!-- SEO Meta Tags -->
   <title>SODEVIA S.A.S. | Transformando ideas en soluciones digitales</title>
   <meta name="description"
@@ -70,7 +75,26 @@
 
         <div class="nav-actions">
           <button id="theme-toggle" class="btn-icon" aria-label="Cambiar tema">
-            <!-- Icon is dynamically set by JS -->
+            <!-- Sun Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="lucide lucide-sun sun-icon">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2" />
+              <path d="M12 20v2" />
+              <path d="m4.93 4.93 1.41 1.41" />
+              <path d="m17.66 17.66 1.41 1.41" />
+              <path d="M2 12h2" />
+              <path d="M20 12h2" />
+              <path d="m6.34 17.66-1.41 1.41" />
+              <path d="m19.07 4.93-1.41 1.41" />
+            </svg>
+            <!-- Moon Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="lucide lucide-moon moon-icon">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+            </svg>
           </button>
           <button id="lang-toggle" class="btn-icon lang-toggle-btn" aria-label="Cambiar idioma">
             EN
@@ -453,11 +477,15 @@
           <!-- Form Column -->
           <div class="contact-form-wrapper reveal">
             <form id="contact-form" autocomplete="on">
+              <!-- Honeypot anti-spam field (hidden from users) -->
+              <input type="text" name="_gotcha" hidden style="display:none !important" tabindex="-1" autocomplete="off">
+
               <div class="form-group">
                 <label for="form-name">
                   <span class="lang-es">Nombre Completo</span><span class="lang-en">Full Name</span> *
                 </label>
-                <input type="text" id="form-name" name="name" class="form-control" placeholder="Ej. Jhon Doe" required>
+                <input type="text" id="form-name" name="name" class="form-control" placeholder="Ej. Jhon Doe"
+                  maxlength="100" required>
               </div>
 
               <div class="form-group">
@@ -465,7 +493,7 @@
                   <span class="lang-es">Correo Electrónico</span><span class="lang-en">Email Address</span> *
                 </label>
                 <input type="email" id="form-email" name="email" class="form-control"
-                  placeholder="Ej. jhondoe@example.com" required>
+                  placeholder="Ej. jhondoe@example.com" maxlength="254" required>
               </div>
 
               <div class="form-group">
@@ -473,7 +501,20 @@
                   <span class="lang-es">Mensaje</span><span class="lang-en">Message</span> *
                 </label>
                 <textarea id="form-message-body" name="message" class="form-control"
-                  placeholder="Escriba aquí su consulta..." required></textarea>
+                  placeholder="Escriba aquí su consulta..." maxlength="5000" required></textarea>
+              </div>
+
+              <!-- Privacy Policy Consent Checkbox -->
+              <div class="form-group form-privacy-check">
+                <input type="checkbox" id="form-privacy" required>
+                <label for="form-privacy" class="privacy-label">
+                  <span class="lang-es">Acepto la <a href="privacy.html" target="_blank"
+                      rel="noopener noreferrer">política de privacidad</a> y el tratamiento de mis datos para responder
+                    a esta consulta.</span>
+                  <span class="lang-en">I accept the <a href="privacy.html" target="_blank"
+                      rel="noopener noreferrer">privacy policy</a> and the processing of my data to respond to this
+                    inquiry.</span>
+                </label>
               </div>
 
               <button type="submit" class="btn-submit">
@@ -504,11 +545,9 @@
       <div class="footer-info">
         <p>© 2026 <strong>SODEVIA S.A.S.</strong> <span class="lang-es">Todos los derechos reservados.</span><span
             class="lang-en">All rights reserved.</span></p>
-        <p style="font-size: 0.75rem; opacity: 0.8;">CUIT: 30-71863686-4</p>
-        <p class="lang-es" style="font-size: 0.75rem; opacity: 0.8;">Servicios de informática n.c.p. • Córdoba,
-          Argentina</p>
-        <p class="lang-en" style="font-size: 0.75rem; opacity: 0.8;">IT Services & Consulting n.e.c. • Córdoba,
-          Argentina</p>
+        <p class="footer-legal-text">CUIT: 30-71863686-4</p>
+        <p class="lang-es footer-legal-text">Servicios de informática n.c.p. • Córdoba, Argentina</p>
+        <p class="lang-en footer-legal-text">IT Services & Consulting n.e.c. • Córdoba, Argentina</p>
       </div>
     </div>
   </footer>

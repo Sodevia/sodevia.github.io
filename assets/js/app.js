@@ -1,7 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
   // --- STATE MANAGEMENT ---
   let currentLang = localStorage.getItem('sodevia-lang') || 'es';
+  if (currentLang !== 'es' && currentLang !== 'en') {
+    currentLang = 'es';
+  }
+
   let currentTheme = localStorage.getItem('sodevia-theme') || 'dark';
+  if (currentTheme !== 'dark' && currentTheme !== 'light') {
+    currentTheme = 'dark';
+  }
 
   const htmlEl = document.documentElement;
 
@@ -32,19 +39,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- THEME SWITCHER ---
   const themeToggle = document.getElementById('theme-toggle');
   if (themeToggle) {
-    // Update icon inside theme button based on current theme
-    const updateThemeIcon = () => {
-      themeToggle.innerHTML = currentTheme === 'dark' 
-        ? '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>' 
-        : '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>';
-    };
-    updateThemeIcon();
-
     themeToggle.addEventListener('click', () => {
       currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
       localStorage.setItem('sodevia-theme', currentTheme);
       htmlEl.setAttribute('data-theme', currentTheme);
-      updateThemeIcon();
     });
   }
 
@@ -155,7 +153,26 @@ document.addEventListener('DOMContentLoaded', () => {
       const email = document.getElementById('form-email').value.trim();
       const msg = document.getElementById('form-message-body').value.trim();
 
-      if (!name || !email || !msg) {
+      // Client-side Honeypot Check
+      const honeypot = contactForm.querySelector('input[name="_gotcha"]').value;
+      if (honeypot) {
+        // Silent success response to trick the bot and save API requests
+        showStatus('success', 'success');
+        contactForm.reset();
+        return;
+      }
+
+      // Privacy Policy Consent Check
+      const privacyCheck = document.getElementById('form-privacy');
+      if (privacyCheck && !privacyCheck.checked) {
+        showStatus('validationError', 'error');
+        return;
+      }
+
+      // Input Length Constraints Check
+      if (!name || name.length > 100 || 
+          !email || email.length > 254 || 
+          !msg || msg.length > 5000) {
         showStatus('validationError', 'error');
         return;
       }
@@ -179,7 +196,8 @@ document.addEventListener('DOMContentLoaded', () => {
           body: JSON.stringify({
             name: name,
             email: email,
-            message: msg
+            message: msg,
+            privacy_consent: "accepted"
           })
         });
 
@@ -201,13 +219,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function showStatus(key, type) {
     formStatus.className = `form-message ${type}`;
-    formStatus.innerHTML = `
-      <span class="lang-es">${translations.es[key]}</span>
-      <span class="lang-en">${translations.en[key]}</span>
-    `;
-    formStatus.style.display = 'block';
     
-    // Auto-scroll to status
+    // Secure DOM manipulation without innerHTML
+    formStatus.textContent = '';
+    
+    const spanEs = document.createElement('span');
+    spanEs.className = 'lang-es';
+    spanEs.textContent = translations.es[key];
+    
+    const spanEn = document.createElement('span');
+    spanEn.className = 'lang-en';
+    spanEn.textContent = translations.en[key];
+    
+    formStatus.appendChild(spanEs);
+    formStatus.appendChild(spanEn);
+    
+    formStatus.style.display = 'block';
     formStatus.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 });
