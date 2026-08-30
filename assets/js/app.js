@@ -175,11 +175,25 @@ document.addEventListener('DOMContentLoaded', () => {
       // If the user wants to plug in their own action URL, they can replace the endpoint.
       // We will perform a fetch to Formspree as an option, or mock a successful request with 1.5s delay.
       try {
-        await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API delay
-        
-        // Success behavior
-        showStatus('success', 'success');
-        contactForm.reset();
+        const response = await fetch("https://formsubmit.co/ajax/sodevia.ar@gmail.com", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify({
+            name: name,
+            email: email,
+            message: msg
+          })
+        });
+
+        if (response.ok) {
+          showStatus('success', 'success');
+          contactForm.reset();
+        } else {
+          showStatus('error', 'error');
+        }
       } catch (err) {
         showStatus('error', 'error');
       } finally {
