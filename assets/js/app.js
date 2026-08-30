@@ -144,8 +144,12 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
+    contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      
+      const submitBtn = contactForm.querySelector('.btn-submit');
+      const submitBtnTextEs = submitBtn.querySelector('.lang-es');
+      const submitBtnTextEn = submitBtn.querySelector('.lang-en');
       
       const name = document.getElementById('form-name').value.trim();
       const email = document.getElementById('form-email').value.trim();
@@ -156,16 +160,41 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      // Show sending state
+      submitBtn.disabled = true;
+      const originalTextEs = submitBtnTextEs.textContent;
+      const originalTextEn = submitBtnTextEn.textContent;
+      submitBtnTextEs.textContent = translations.es.submitting;
+      submitBtnTextEn.textContent = translations.en.submitting;
+      
+      formStatus.style.display = 'none';
+
       try {
-        const subject = encodeURIComponent(`Contacto Web Sodevia - ${name}`);
-        const body = encodeURIComponent(`Nombre: ${name}\nEmail: ${email}\n\nMensaje:\n${msg}`);
-        
-        window.location.href = `mailto:sodevia.ar@gmail.com?subject=${subject}&body=${body}`;
-        
-        showStatus('success', 'success');
-        contactForm.reset();
+        const response = await fetch("https://formspree.io/f/mwlkpyqq", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify({
+            name: name,
+            email: email,
+            message: msg
+          })
+        });
+
+        if (response.ok) {
+          showStatus('success', 'success');
+          contactForm.reset();
+        } else {
+          showStatus('error', 'error');
+        }
       } catch (err) {
         showStatus('error', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtnTextEs.textContent = originalTextEs;
+        submitBtnTextEn.textContent = originalTextEn;
       }
     });
   }
