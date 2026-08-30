@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 100" width="100%" height="100%">
+  <defs>
+    <linearGradient id="sodevia-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00f0ff" />
+      <stop offset="50%" stop-color="#0072ff" />
+      <stop offset="100%" stop-color="#7000ff" />
+    </linearGradient>
+  </defs>
+  
+  <g transform="translate(0, 0)">
+    <!-- Connections (Lines) -->
+    <path d="M 50 22.5 H 37.5 C 34.7 22.5 32.5 24.7 32.5 27.5 V 40" fill="none" stroke="url(#sodevia-grad)" stroke-width="2.5" />
+    <path d="M 32.5 65 V 77.5 C 32.5 80.3 34.7 82.5 37.5 82.5 H 50" fill="none" stroke="url(#sodevia-grad)" stroke-width="2.5" />
+    
+    <!-- Squares (Nodes) -->
+    <rect x="50" y="10" width="25" height="25" stroke="url(#sodevia-grad)" stroke-width="5" fill="none" />
+    <rect x="20" y="40" width="25" height="25" stroke="url(#sodevia-grad)" stroke-width="5" fill="none" />
+    <rect x="50" y="70" width="25" height="25" stroke="url(#sodevia-grad)" stroke-width="5" fill="none" />
+    
+    <!-- Connection Nodes -->
+    <rect x="47.5" y="20" width="5" height="5" fill="url(#sodevia-grad)" />
+    <rect x="30" y="37.5" width="5" height="5" fill="url(#sodevia-grad)" />
+    <rect x="30" y="62.5" width="5" height="5" fill="url(#sodevia-grad)" />
+    <rect x="47.5" y="80" width="5" height="5" fill="url(#sodevia-grad)" />
+  </g>
+  
+  <!-- Text -->
+  <text x="95" y="67" font-family="-apple-system, BlinkMacSystemFont, 'Outfit', 'Montserrat', 'Segoe UI', Roboto, sans-serif" font-size="52" font-weight="800" fill="#ffffff" letter-spacing="1">SODEVIA</text>
+</svg>
